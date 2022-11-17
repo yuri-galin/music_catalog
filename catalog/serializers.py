@@ -21,12 +21,16 @@ class TrackSerializer(serializers.ModelSerializer):
 
 
 class AlbumItemSerializer(serializers.ModelSerializer):
+    album_name = serializers.ReadOnlyField(source="album.name")
     class Meta:
         model = AlbumItem
-        fields = ['id', 'track', 'album', 'order']
+        fields = ['album', 'album_name', 'order']
 
 
 class FullTrackSerializer(serializers.ModelSerializer):
+    band_name = serializers.ReadOnlyField(source="band.name")
+    album_info = AlbumItemSerializer(many=True)
+
     class Meta:
         model = Track
-        fields = ['id', 'name', 'band']
+        fields = ['id', 'name', 'band', 'band_name', 'album_info']
