@@ -1,24 +1,34 @@
+import datetime
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
+def max_year_validator(value):
+    return MaxValueValidator(datetime.date.today().year)(value)
+
+
 class Band(models.Model):
-    name = models.CharField(max_length=100)  # the longest existing band name is 68 characters long
+    # the longest existing band name is 68 characters long
+    name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
 
 
 class Album(models.Model):
-    name = models.CharField(max_length=1000)  # the longest existing album name is 865 characters long
+    # the longest existing album name is 865 characters long
+    name = models.CharField(max_length=1000)
     band = models.ForeignKey(Band, related_name='albums', on_delete=models.CASCADE)
-    release_year = models.IntegerField(default=0)
+    # the first album ever was recorded in 1889 by Emile Berliner
+    release_year = models.PositiveSmallIntegerField(validators=[MinValueValidator(1889), max_year_validator])
 
     def __str__(self):
         return self.name
 
 
 class Track(models.Model):
-    name = models.CharField(max_length=600)  # the longest existing song name is 481 characters long
+    # the longest existing song name is 481 characters long
+    name = models.CharField(max_length=600)
     band = models.ForeignKey(Band, related_name='tracks', on_delete=models.CASCADE)
 
     def __str__(self):
@@ -28,10 +38,10 @@ class Track(models.Model):
 class AlbumItem(models.Model):
     track = models.ForeignKey(Track, related_name='album_info', on_delete=models.CASCADE)
     album = models.ForeignKey(Album, related_name='album_items', on_delete=models.CASCADE)
-    order = models.IntegerField(default=0)
+    order = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
 
     def __str__(self):
-        return f"'{self.name}' in {self.album}"
+        return f"'{self.track}' in {self.album}"
 
     class Meta:
         verbose_name = "album item"
