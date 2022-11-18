@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Band, Album, Track, AlbumItem
-from .serializers import BandSerializer, AlbumSerializer, TrackSerializer, AlbumItemSerializer, FullTrackSerializer
+from .models import Band, Album, Track
+from .serializers import BandSerializer, AlbumSerializer, TrackSerializer
 
 
 class BandViewSet(viewsets.ModelViewSet):
@@ -24,20 +24,4 @@ class TrackViewSet(viewsets.ModelViewSet):
     A viewset for viewing and editing Track instances.
     """
     serializer_class = TrackSerializer
-    queryset = Track.objects.all()
-
-
-class AlbumItemViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing AlbumItem instances.
-    """
-    serializer_class = AlbumItemSerializer
-    queryset = AlbumItem.objects.all()
-
-
-class FullTrackViewSet(viewsets.ModelViewSet):
-    """
-    A viewset for viewing and editing Track instances.
-    """
-    serializer_class = FullTrackSerializer
     queryset = Track.objects.all()

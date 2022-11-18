@@ -48,4 +48,5 @@ class AlbumItem(models.Model):
         verbose_name_plural = "album items"
         ordering = ('track', 'order', 'album')
         unique_together = (('track', 'order'),
-                           ('track', 'album'))
+                           ('track', 'album'),
+                           ('order', 'album'))
